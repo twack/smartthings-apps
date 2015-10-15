@@ -14,26 +14,26 @@ definition(
 )
 preferences {
 	section("When a Switch is turned on..."){
-		input "switch", "capability.switch", title: "Which?"
+		input "switchMaster", "capability.switch", title: "Which?"
 	}
 	section("Turn on this/these Fibaro Police Light(s)..."){
-		input "switches", "capability.switch", multiple: true
+		input "fibaros", "capability.color control", multiple: true
 	}
 }
 def installed() {
-	subscribe(switch, "switch.on", switchOnHandler)
-    subscribe(switch, "switch.off", switchOffHandler)
+	subscribe(switchMaster, "switch.on", switchOnHandler)
+    subscribe(switchMaster, "switch.off", switchOffHandler)
 }
 def updated() {
 	unsubscribe()
-	subscribe(switch, "switch.on", switchOnHandler)
-    subscribe(switch, "switch.off", switchOffHandler)
+	subscribe(switchMaster, "switch.on", switchOnHandler)
+    subscribe(switchMaster, "switch.off", switchOffHandler)
 }
 def switchOnHandler(evt) {
-	log.trace "Turning on switches: $switches"
-	switches.police()
+	log.trace "Turning on Fibaro RGBW: $fibaros"
+	fibaros.police()
 }
 def switchOffHandler(evt) {
-	log.trace "Turning on switches: $switches"
-	switches.off()
+	log.trace "Turning off Fibaro RGBW: $fibaros"
+	fibaros.off()
 }
